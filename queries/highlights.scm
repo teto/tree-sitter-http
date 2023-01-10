@@ -1,71 +1,19 @@
 ; Keywords
 
-(scheme) @namespace
+; Display errors
+; (ERROR) @error
 
-; Methods
+; ; Comments
+; (comment) @comment
 
-(method) @method
+; (request
+;   method: (method) @keyword
+;   url: (url) @text.uri)
 
-; Constants
+; (header
+;   name: (name) @constant
+;   value: (value))
 
-(const_spec) @constant
-
-; Headers
-
-(header
-  name: (name) @constant)
-
-; Variables
-
-(identifier) @variable
-
-; Fields
-
-(pair name: (identifier) @field)
-
-; URL / Host
-(host) @text.uri
-(host (identifier) @text.uri)
-(path (identifier) @text.uri)
-
-; Parameters
-
-(query_param (key) @parameter)
-
-; Operators
-
-[
-  "="
-  "?"
-  "&"
-  "@"
-] @operator
-
-; Literals
-
-(string) @string
-
-(target_url) @text.uri
-
-(number) @number
-
-; (boolean) @boolean
-
-(null) @constant.builtin
-
-; Punctuation
-
-[ "{{" "}}" ] @punctuation.bracket
-
-[
-  ":"
-] @punctuation.delimiter
-
-; Comments
-
-(comment) @comment @spell
-
-; Errors
-
-(ERROR) @error
-
+; rest.nvim Neovim plugin specific features
+; (external_body
+;   json_file: (json_file) @text.uri) @keyword

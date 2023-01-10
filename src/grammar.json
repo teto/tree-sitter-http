@@ -5,56 +5,8 @@
     "document": {
       "type": "REPEAT",
       "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "variable_declaration"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "variable"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "comment"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "request"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "query_param"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "header"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "json_body"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "xml_body"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "external_body"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "number"
-          },
-          {
-            "type": "IMMEDIATE_TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "[\\r\\n]+"
-            }
-          }
-        ]
+        "type": "SYMBOL",
+        "name": "query"
       }
     },
     "request": {
@@ -698,39 +650,196 @@
         ]
       }
     },
-    "const_spec": {
+    "true": {
+      "type": "STRING",
+      "value": "true"
+    },
+    "false": {
+      "type": "STRING",
+      "value": "false"
+    },
+    "null": {
+      "type": "STRING",
+      "value": "null"
+    },
+    "query": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "request",
+          "content": {
+            "type": "SYMBOL",
+            "name": "request"
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "header"
+          }
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "STRING",
+            "value": "\n"
+          }
+        }
+      ]
+    },
+    "request": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "method",
+          "content": {
+            "type": "SYMBOL",
+            "name": "method"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_whitespace"
+        },
+        {
+          "type": "FIELD",
+          "name": "url",
+          "content": {
+            "type": "SYMBOL",
+            "name": "url"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_whitespace"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "http_version"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "http_version": {
+      "type": "PATTERN",
+      "value": "HTTP\\/.*"
+    },
+    "method": {
       "type": "PATTERN",
       "value": "[A-Z][A-Z\\\\d_]+"
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "[A-Za-z_.\\d\\u00A1-\\uFFFF-]+"
+      "value": "((www|http:|https:)\\/\\/(?:w{1,3}\\.)?[^\\s.]+(?:\\.[a-z]+)*(?::\\d+)?|\\{\\{\\w+\\}\\})([\\w.,@?^=%&amp;:\\/~+#\\{\\}\\u00C0-\\u00FF-]*[\\w@?^=%&amp;\\/~+#\\u00C0-\\u00FF-])?"
+    },
+    "header": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[A-Za-z0-9_-]+"
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "STRING",
+                  "value": ":"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_whitespace"
+        },
+        {
+          "type": "FIELD",
+          "name": "value",
+          "content": {
+            "type": "SYMBOL",
+            "name": "value"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "value": {
+      "type": "PATTERN",
+      "value": "[^\\n]+"
+    },
+    "body": {
+      "type": "SYMBOL",
+      "name": "external_body"
+    },
+    "external_body": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_whitespace"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "payload_file"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "payload_file": {
+      "type": "PATTERN",
+      "value": "[a-z.\\/]+"
     },
     "comment": {
       "type": "PREC_LEFT",
       "value": 1,
       "content": {
-        "type": "TOKEN",
-        "content": {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "#"
-            },
-            {
-              "type": "PATTERN",
-              "value": ".*"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": "[\\r\\n]+"
-              }
-            }
-          ]
-        }
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "#"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[\\s\\S]*"
+          }
+        ]
       }
     },
     "_whitespace": {
@@ -778,10 +887,18 @@
     }
   },
   "extras": [],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "payload_file"
+    ]
+  ],
   "precedences": [],
   "externals": [],
-  "inline": [],
-  "supertypes": []
+  "inline": [
+    "_whitespace"
+  ],
+  "supertypes": [
+    "_value"
+  ]
 }
 

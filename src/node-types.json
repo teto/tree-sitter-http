@@ -28,43 +28,7 @@
       "required": false,
       "types": [
         {
-          "type": "comment",
-          "named": true
-        },
-        {
-          "type": "external_body",
-          "named": true
-        },
-        {
-          "type": "header",
-          "named": true
-        },
-        {
-          "type": "json_body",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "query_param",
-          "named": true
-        },
-        {
-          "type": "request",
-          "named": true
-        },
-        {
-          "type": "variable",
-          "named": true
-        },
-        {
-          "type": "variable_declaration",
-          "named": true
-        },
-        {
-          "type": "xml_body",
+          "type": "query",
           "named": true
         }
       ]
@@ -73,24 +37,13 @@
   {
     "type": "external_body",
     "named": true,
-    "fields": {
-      "file_path": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "path",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "identifier",
+          "type": "payload_file",
           "named": true
         }
       ]
@@ -105,8 +58,8 @@
         "required": true,
         "types": [
           {
-            "type": "name",
-            "named": true
+            "type": ":",
+            "named": false
           }
         ]
       },
@@ -123,7 +76,7 @@
     }
   },
   {
-    "type": "host",
+    "type": "object",
     "named": true,
     "fields": {},
     "children": {
@@ -234,6 +187,32 @@
     }
   },
   {
+    "type": "query",
+    "named": true,
+    "fields": {
+      "request": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "request",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "header",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "request",
     "named": true,
     "fields": {},
@@ -316,6 +295,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "http_version",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -324,15 +313,30 @@
     "fields": {}
   },
   {
-    "type": "&",
+    "type": "string_content",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "\n",
+    "named": false
+  },
+  {
+    "type": "\"",
     "named": false
   },
   {
     "type": "(",
-    "named": false
-  },
-  {
-    "type": "/",
     "named": false
   },
   {
@@ -356,11 +360,7 @@
     "named": false
   },
   {
-    "type": "@",
-    "named": false
-  },
-  {
-    "type": "const_spec",
+    "type": "escape_sequence",
     "named": true
   },
   {
@@ -372,11 +372,11 @@
     "named": true
   },
   {
-    "type": "key",
+    "type": "http_version",
     "named": true
   },
   {
-    "type": "name",
+    "type": "method",
     "named": true
   },
   {
@@ -384,11 +384,11 @@
     "named": true
   },
   {
-    "type": "query",
-    "named": false
+    "type": "payload_file",
+    "named": true
   },
   {
-    "type": "scheme",
+    "type": "true",
     "named": true
   },
   {

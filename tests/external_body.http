@@ -1,0 +1,6 @@
+POST https://reqres.in/api/users
+X-header-0: toto
+X-header-1: tata
+
+< /test/file.so
+

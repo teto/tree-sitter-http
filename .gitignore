@@ -1,2 +1,4 @@
 node_modules
 bindings
+.nvimrc
+tree-sitter-http.wasm
