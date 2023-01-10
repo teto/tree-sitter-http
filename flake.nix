@@ -20,6 +20,9 @@
           (pkgs.vimPlugins.nvim-treesitter.withPlugins(p: [ p.json ]))
           pkgs.nodejs
           pkgs.python3  # needed by node-gyp
+          pkgs.emscripten # for build-wasm command
+          pkgs.nodePackages.typescript-language-server
+
         ];
       };
     };

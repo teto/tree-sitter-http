@@ -5,7 +5,7 @@
       "type": "REPEAT",
       "content": {
         "type": "SYMBOL",
-        "name": "_value"
+        "name": "query"
       }
     },
     "_value": {
@@ -647,6 +647,33 @@
       "type": "STRING",
       "value": "null"
     },
+    "query": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "request",
+          "content": {
+            "type": "SYMBOL",
+            "name": "request"
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "header"
+          }
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "STRING",
+            "value": "\n"
+          }
+        }
+      ]
+    },
     "request": {
       "type": "SEQ",
       "members": [
@@ -669,8 +696,37 @@
             "type": "SYMBOL",
             "name": "url"
           }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_whitespace"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "http_version"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
         }
       ]
+    },
+    "http_version": {
+      "type": "PATTERN",
+      "value": "HTTP\\/.*"
     },
     "method": {
       "type": "PATTERN",
@@ -690,12 +746,15 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "name"
+                "type": "PATTERN",
+                "value": "[A-Za-z0-9_-]+"
               },
               {
-                "type": "STRING",
-                "value": ":"
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "STRING",
+                  "value": ":"
+                }
               }
             ]
           }
@@ -711,53 +770,45 @@
             "type": "SYMBOL",
             "name": "value"
           }
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
         }
       ]
-    },
-    "name": {
-      "type": "PATTERN",
-      "value": "[A-Za-z-]+"
     },
     "value": {
       "type": "PATTERN",
       "value": "[^\\n]+"
     },
-    "json_file": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "[A-Za-z-_./]+"
-        },
-        {
-          "type": "STRING",
-          "value": ".json"
-        }
-      ]
+    "body": {
+      "type": "SYMBOL",
+      "name": "external_body"
     },
     "external_body": {
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "STRING",
-            "value": "<"
-          }
+          "type": "STRING",
+          "value": "<"
         },
         {
           "type": "SYMBOL",
           "name": "_whitespace"
         },
         {
-          "type": "FIELD",
-          "name": "json_file",
-          "content": {
-            "type": "SYMBOL",
-            "name": "json_file"
-          }
+          "type": "SYMBOL",
+          "name": "payload_file"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
         }
       ]
+    },
+    "payload_file": {
+      "type": "PATTERN",
+      "value": "[a-z.\\/]+"
     },
     "comment": {
       "type": "TOKEN",
@@ -770,7 +821,7 @@
           },
           {
             "type": "PATTERN",
-            "value": ".*"
+            "value": "[\\s\\S]*"
           }
         ]
       }
@@ -783,32 +834,17 @@
       }
     }
   },
-  "extras": [
-    {
-      "type": "PATTERN",
-      "value": "\\s"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "request"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "header"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "external_body"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "comment"
-    }
+  "extras": [],
+  "conflicts": [
+    [
+      "payload_file"
+    ]
   ],
-  "conflicts": [],
   "precedences": [],
   "externals": [],
-  "inline": [],
+  "inline": [
+    "_whitespace"
+  ],
   "supertypes": [
     "_value"
   ]

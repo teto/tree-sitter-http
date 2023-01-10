@@ -57,7 +57,7 @@
       "required": false,
       "types": [
         {
-          "type": "_value",
+          "type": "query",
           "named": true
         }
       ]
@@ -66,17 +66,16 @@
   {
     "type": "external_body",
     "named": true,
-    "fields": {
-      "json_file": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "json_file",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "payload_file",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -90,10 +89,6 @@
           {
             "type": ":",
             "named": false
-          },
-          {
-            "type": "name",
-            "named": true
           }
         ]
       },
@@ -108,11 +103,6 @@
         ]
       }
     }
-  },
-  {
-    "type": "json_file",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "object",
@@ -160,6 +150,32 @@
     }
   },
   {
+    "type": "query",
+    "named": true,
+    "fields": {
+      "request": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "request",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "header",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "request",
     "named": true,
     "fields": {
@@ -183,6 +199,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "http_version",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -216,15 +242,15 @@
     }
   },
   {
+    "type": "\n",
+    "named": false
+  },
+  {
     "type": "\"",
     "named": false
   },
   {
     "type": ",",
-    "named": false
-  },
-  {
-    "type": ".json",
     "named": false
   },
   {
@@ -244,10 +270,6 @@
     "named": false
   },
   {
-    "type": "comment",
-    "named": true
-  },
-  {
     "type": "escape_sequence",
     "named": true
   },
@@ -256,11 +278,11 @@
     "named": true
   },
   {
-    "type": "method",
+    "type": "http_version",
     "named": true
   },
   {
-    "type": "name",
+    "type": "method",
     "named": true
   },
   {
@@ -269,6 +291,10 @@
   },
   {
     "type": "number",
+    "named": true
+  },
+  {
+    "type": "payload_file",
     "named": true
   },
   {
