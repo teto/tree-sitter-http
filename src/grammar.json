@@ -671,6 +671,10 @@
             "type": "STRING",
             "value": "\n"
           }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "body"
         }
       ]
     },

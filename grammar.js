@@ -51,7 +51,7 @@ module.exports = grammar(json, {
         repeat($.header),
         // should depend from method ?
         repeat1('\n')
-        // , $.body
+        , $.body
       // ,
         // optional($.script)
 	),
