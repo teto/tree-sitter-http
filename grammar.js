@@ -60,7 +60,7 @@ module.exports = grammar({
         repeat($.header),
         // should depend from method ?
         repeat1('\n')
-        // , $.body
+        , $.body
       // ,
         // optional($.script)
 	),

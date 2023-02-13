@@ -15,9 +15,19 @@
     }
   },
   {
-    "type": "comment",
+    "type": "body",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "external_body",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "document",
@@ -203,8 +213,12 @@
     },
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
+        {
+          "type": "body",
+          "named": true
+        },
         {
           "type": "header",
           "named": true
