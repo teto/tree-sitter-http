@@ -17,20 +17,20 @@
 
 ; Variables
 
-(identifier) @variable
+; (identifier) @variable
 
 ; Fields
 
-(pair name: (identifier) @field)
+; (pair name: (identifier) @field)
 
 ; URL / Host
-(host) @text.uri
-(host (identifier) @text.uri)
-(path (identifier) @text.uri)
+; (host) @text.uri
+; (host (identifier) @text.uri)
+; (path (identifier) @text.uri)
 
 ; Parameters
 
-(query_param (key) @parameter)
+; (query_param (key) @parameter)
 
 ; Operators
 

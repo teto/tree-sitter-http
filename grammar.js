@@ -11,49 +11,34 @@ const PREC = {
 
 module.exports = grammar({
   name: "http",
+
   // extras - an array of tokens that may appear anywhere in the language. 
   // This is often used for whitespace and comments. 
   // The default value of extras is to accept whitespace.
   // To control whitespace explicitly, specify extras: $ => [] in your grammar.
-  // extras: ($, original) => [
-  //   ...original,
-  //   $.request,
-  //   $.header,
-  //   $.external_body,
-  //   $.comment,
-  // ],
-  //
+  extras: $ => [ $.comment ],
+  word: $ => $.identifier,
+  inline: $ => [],
+
   // Tokens : token(rule) - This function marks the given rule as producing only a single token. 
   // Tree-sitter’s default is to treat each String or RegExp literal in the grammar as a separate token. 
   // Each token is matched separately by the lexer and returned as its own leaf node in the tree. 
   // The token function allows you to express a complex rule using the functions described above (rather than as a single regular expression) but still have Tree-sitter treat it as a single token.
 
-
-  // Tree-sitter will try to resolve the conflict by matching the rule with the higher precedence.
-  // extras: ($, original) => [...original, $.comment],
-  extras: _ => [ ],
-  //   /\s/,
-  //   $.comment,
+  // conflicts: ($) => [
+  //     [$.variable_declarator, $._prefix_exp],
+  //     [$.emmy_ignore, $.emmy_comment],
   // ],
-
-    // conflicts: ($) => [
-    //     [$.variable_declarator, $._prefix_exp],
-    //     [$.emmy_ignore, $.emmy_comment],
-    // ],
-
   conflicts: $ => [
     [$.payload_file]
-  ],
-
-  inline: $ => [ 
-    $._whitespace,
-    // $.name
   ],
 
   rules: {
     document: $ => repeat($.query),
 
+   // TODO support comment
 	query: $ => seq(
+        // $.comment
 		field("request", $.request),
 		// $.content_type,
         // repeat => 0 or more
@@ -68,14 +53,30 @@ module.exports = grammar({
 
     request: ($) => seq(field("method", $.method),
         $._whitespace,
-      field("url", $.url), 
-      optional(seq($._whitespace, $.http_version)), '\n'),
+      field("url", $.target_url), 
+      optional(seq($._whitespace, $.http_version)),
+      NL),
     http_version: _ => /HTTP\/.*/,
-    method: (_) => /(GET|POST|PATCH|DELETE|PUT)/,
-    url: (_) => 
-      // /[^\n]+/,
-      // /\w/,
-      /((www|http:|https:)\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?|\{\{\w+\}\})([\w.,@?^=%&amp;:\/~+#\{\}\u00C0-\u00FF-]*[\w@?^=%&amp;\/~+#\u00C0-\u00FF-])?/,
+    method: $ => choice(/(OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT|PATCH)/, $.const_spec),
+
+    // url: (_) => 
+    //   // /[^\n]+/,
+    //   // /\w/,
+    //   /((www|http:|https:)\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?|\{\{\w+\}\})([\w.,@?^=%&amp;:\/~+#\{\}\u00C0-\u00FF-]*[\w@?^=%&amp;\/~+#\u00C0-\u00FF-])?/,
+    target_url: $ => seq(
+      optional(seq($.scheme, "://")),
+      optional($.authority),
+      $.host,
+      optional($.path),
+      optional(repeat1($.query_param)),
+    ),
+
+    scheme: _ => /(about|acct|arcp|cap|cid|coap+tcp|coap+ws|coaps+tcp|coaps+ws|data|dns|example|file|ftp|geo|h323|http|https|im|info|ipp|mailto|mid|ni|nih|payto|pkcs11|pres|reload|secret-token|session|sms|tag|telnet|urn|ws|wss)/,
+
+    authority: $ => prec.left(PREC.request, seq(optional($.pair), "@")),
+    host: $ => prec.left(PREC.request, seq($.identifier, optional($.pair))),
+    path: $ => repeat1(choice("/", seq("/", $.identifier, optional("/")))),
+    http_version: _ => prec.right(/HTTP\/1.1|HTTP\/2/),
 
     header: ($) =>
       seq(
@@ -121,7 +122,6 @@ module.exports = grammar({
 	// accept_type_key: $ => seq("accept-type:", $.accept_type),
 	// accept_type: $ => $.value,
 
-    comment: (_) => token(seq("#", /[\s\S]*/)),
 
     pair: $ => seq(
       field("name", $.identifier),

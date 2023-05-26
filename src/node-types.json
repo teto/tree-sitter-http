@@ -30,6 +30,11 @@
     }
   },
   {
+    "type": "comment",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "document",
     "named": true,
     "fields": {},
@@ -47,13 +52,24 @@
   {
     "type": "external_body",
     "named": true,
-    "fields": {},
+    "fields": {
+      "file_path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "path",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "payload_file",
+          "type": "identifier",
           "named": true
         }
       ]
@@ -68,8 +84,8 @@
         "required": true,
         "types": [
           {
-            "type": ":",
-            "named": false
+            "type": "name",
+            "named": true
           }
         ]
       },
@@ -86,7 +102,7 @@
     }
   },
   {
-    "type": "object",
+    "type": "host",
     "named": true,
     "fields": {},
     "children": {
@@ -106,11 +122,6 @@
   },
   {
     "type": "http_version",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "json_body",
     "named": true,
     "fields": {}
   },
@@ -171,32 +182,6 @@
     }
   },
   {
-    "type": "query_param",
-    "named": true,
-    "fields": {
-      "key": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "key",
-            "named": true
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "value",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "query",
     "named": true,
     "fields": {
@@ -227,23 +212,62 @@
     }
   },
   {
+    "type": "query_param",
+    "named": true,
+    "fields": {
+      "key": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "key",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "value",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "request",
     "named": true,
-    "fields": {},
+    "fields": {
+      "method": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "method",
+            "named": true
+          }
+        ]
+      },
+      "url": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "target_url",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
         {
           "type": "http_version",
-          "named": true
-        },
-        {
-          "type": "method",
-          "named": true
-        },
-        {
-          "type": "target_url",
           "named": true
         }
       ]
@@ -281,76 +305,24 @@
     }
   },
   {
-    "type": "variable",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "variable_declaration",
-    "named": true,
-    "fields": {
-      "identifier": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "http_version",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "xml_body",
+    "type": "value",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "string_content",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "escape_sequence",
-          "named": true
-        }
-      ]
-    }
   },
   {
     "type": "\n",
     "named": false
   },
   {
-    "type": "\"",
+    "type": "&",
     "named": false
   },
   {
     "type": "(",
+    "named": false
+  },
+  {
+    "type": "/",
     "named": false
   },
   {
@@ -374,7 +346,11 @@
     "named": false
   },
   {
-    "type": "escape_sequence",
+    "type": "@",
+    "named": false
+  },
+  {
+    "type": "const_spec",
     "named": true
   },
   {
@@ -386,32 +362,24 @@
     "named": true
   },
   {
-    "type": "http_version",
+    "type": "key",
     "named": true
   },
   {
-    "type": "method",
+    "type": "name",
     "named": true
   },
   {
-    "type": "number",
-    "named": true
+    "type": "query",
+    "named": false
   },
   {
-    "type": "payload_file",
-    "named": true
-  },
-  {
-    "type": "true",
+    "type": "scheme",
     "named": true
   },
   {
     "type": "true",
     "named": false
-  },
-  {
-    "type": "value",
-    "named": true
   },
   {
     "type": "{{",
